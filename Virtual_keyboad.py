@@ -27,8 +27,8 @@ while(1):
     old_area,new_area=0,0
     #for yellow color idenitfiaction in frame
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_yellow = np.array([14,141,140])#change this hsv values if yellow color as per your lighting condition
-    upper_yellow = np.array([84,255,255])#same as above    
+    lower_yellow = np.array([110,50,50])#change this hsv values if yellow color as per your lighting condition
+    upper_yellow = np.array([130,255,255])#same as above    
     
     mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
     blur = cv2.medianBlur(mask, 15)

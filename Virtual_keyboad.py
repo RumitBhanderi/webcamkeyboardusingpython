@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue july 22 09:52:16 2018
+@author: admin
+"""
+
 import numpy as np
 import cv2
 import pyautogui
@@ -33,7 +39,162 @@ while(1):
     cv2.imshow("mask",mask)
     #find contours in frame
     _,contours, hierarchy = cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    
+            
+    #function to determine which key is pressed based on the center of the contour(yellow paper)
+    def key_deter(cx,cy):
+        if cy>50 and cy<100:
+            if cx>50 and cx<100:
+                print("1")
+                pyautogui.press("1")
+            elif cx>100 and cx<150:
+                print("2")
+                pyautogui.press("2")
+            elif cx>150 and cx<200:
+                print("3")
+                pyautogui.press("3")
+            elif cx>200 and cx<250:
+                print("4")
+                pyautogui.press("4")
+            elif cx>250 and cx<300:
+                print("5")
+                pyautogui.press("5")
+            elif cx>300 and cx<350:
+                print("6")
+                pyautogui.press("6")
+            elif cx>350 and cx<400:
+                print("7")
+                pyautogui.press("7")
+            elif cx>400 and cx<450:
+                print("8")
+                pyautogui.press("8")
+            elif cx>450 and cx<500:
+                print("9")
+                pyautogui.press("9")
+            elif cx>500 and cx<550:
+                print("0")
+                pyautogui.press("0")
+        elif cy>100 and cy<150:
+            if cx>50 and cx<100:
+                print("q")
+                pyautogui.press("q")
+            elif cx>100 and cx<150:
+                print("w")
+                pyautogui.press("w")
+            elif cx>150 and cx<200:
+                print("e")
+                pyautogui.press("e")
+            elif cx>200 and cx<250:
+                print("r")
+                pyautogui.press("r")
+            elif cx>250 and cx<300:
+                print("t")
+                pyautogui.press("t")
+            elif cx>300 and cx<350:
+                print("y")
+                pyautogui.press("y")
+            elif cx>350 and cx<400:
+                print("u")
+                pyautogui.press("u")
+            elif cx>400 and cx<450:
+                print("i")
+                pyautogui.press("i")
+            elif cx>450 and cx<500:
+                print("o")
+                pyautogui.press("o")
+            elif cx>500 and cx<550:
+                print("p")
+                pyautogui.press("p")
+        elif cy>150 and cy<200:
+            if cx>50 and cx<100:
+                print("a")
+                pyautogui.press("a")
+            elif cx>100 and cx<150:
+                print("s")
+                pyautogui.press("s")
+            elif cx>150 and cx<200:
+                print("d")
+                pyautogui.press("d")
+            elif cx>200 and cx<250:
+                print("f")
+                pyautogui.press("f")
+            elif cx>250 and cx<300:
+                print("g")
+                pyautogui.press("g")
+            elif cx>300 and cx<350:
+                print("h")
+                pyautogui.press("h")
+            elif cx>350 and cx<400:
+                print("j")
+                pyautogui.press("j")
+            elif cx>400 and cx<450:
+                print("k")
+                pyautogui.press("k")
+            elif cx>450 and cx<500:
+                print("l")
+                pyautogui.press("l")
+        elif cy>200 and cy<250:
+            if cx>50 and cx<100:
+                print("z")
+                pyautogui.press("z")
+            elif cx>100 and cx<150:
+                print("x")
+                pyautogui.press("x")
+            elif cx>150 and cx<200:
+                print("c")
+                pyautogui.press("c")
+            elif cx>200 and cx<250:
+                print("v")
+                pyautogui.press("v")
+            elif cx>250 and cx<300:
+                print("b")
+                pyautogui.press("b")
+            elif cx>300 and cx<350:
+                print("n")
+                pyautogui.press("n")
+            elif cx>350 and cx<400:
+                print("m")
+                pyautogui.press("m")
+        elif cy>250 and cy<300:
+            if cx>100 and cx<450:
+                print("space")
+                pyautogui.press("space")
+            elif cx>450 and cx<550:
+                print("Backspace")
+                pyautogui.press("backspace")
+    
+    cv2.drawContours(frame,contours,-1,(0,255,0),2)
+    
+    
+    
+
+    
+    if len(contours)>0:
+        cnt=max(contours,key=cv2.contourArea)
+        if cv2.contourArea(cnt)>600 and cv2.contourArea(cnt)<1200:
+             M = cv2.moments(cnt)
+             cx = int(M['m10']/M['m00'])
+             cy = int(M['m01']/M['m00'])
+             #print ("Centroid = ", cx, ", ", cy)
+             new_area=cv2.contourArea(cnt)
+             #print("new area ",new_area)
+             cv2.circle(frame,(cx,cy),1,(0,0,255),2)
+             if count==0:
+                 old_area=new_area
+                 #print("in count==0   ",count)
+                 
+             count=count+1
+             #print(count)
+             if count==20:
+                 count=0
+                 diff_area=new_area-old_area
+                 if diff_area>900 and diff_area<1200:
+                    print("diff- ",diff_area)
+                    key_deter(cx,cy)
+                
         
+        
+    #display the keyboard in the screen        
     def keyboard_layout():   
         x=50
         y=50
@@ -79,8 +240,11 @@ while(1):
         cv2.putText(frame,"<--",(x+357,285),cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0),2)
     keyboard_layout()
     cv2.imshow('image',frame)
-    if cv2.waitKey(1) == 27:  
+    if cv2.waitKey(1) == 27:  ## 27 - ASCII for escape key
         break
+############################################
 
+############################################
+## Close and exit
 cap.release()
 cv2.destroyAllWindows()

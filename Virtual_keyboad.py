@@ -191,9 +191,7 @@ while(1):
                  if diff_area>900 and diff_area<1200:
                     print("diff- ",diff_area)
                     key_deter(cx,cy)
-                
-        
-        
+            
     #display the keyboard in the screen        
     def keyboard_layout():   
         x=50
